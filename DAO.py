@@ -1,4 +1,5 @@
 from database.DB_connect import DBConnect
+from model.sighting import Sighting
 from model.stato import Stato
 
 
@@ -90,6 +91,26 @@ class DAO():
         for row in cursor:
             result.append(row["peso"])
             # equivale a creare il costruttore lungo con tutte le righe con i rispettivi attributi
+
+        cursor.close()
+        conn.close()
+        return result
+
+    @staticmethod
+    def getAvvistamenti():
+        conn = DBConnect.get_connection()
+
+        result = []
+
+        cursor = conn.cursor(dictionary=True)
+        query = """
+                    select *
+                    from sighting
+                    """
+        cursor.execute(query, )
+
+        for row in cursor:
+            result.append(Sighting(**row))
 
         cursor.close()
         conn.close()
